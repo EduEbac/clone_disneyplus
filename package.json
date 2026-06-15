@@ -5,8 +5,7 @@
   "scripts": {
     "dev":"gulp watch",
     "build": "gulp",
-    "watch": "gulp watch",
-    "images:opt": "node scripts/optimize-images.js",
+    "images:opt": "node scripts/optimize-images-sharp.js",
     "verify-images": "node scripts/verify-images.js",
     "build:prod": "npm run images:opt && npm run verify-images && npm run build",
     "vercel-build": "npm run build:prod",
@@ -19,10 +18,9 @@
   "devDependencies": {
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
-    "gulp-imagemin": "^7.1.0",
     "gulp-sass": "^6.0.1",
     "sass": "^1.101.0",
-    "imagemin-mozjpeg": "^8.0.0",
-    "imagemin-optipng": "^7.0.0"
+    "sharp": "^0.32.0",
+    "glob": "^10.3.3"
   }
 }
