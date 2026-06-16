@@ -13,12 +13,6 @@ Scripts importantes
 - `npm run verify-images` — verifica magic-bytes (JPEG/PNG) em `dist/images` para garantir arquivos válidos.
 - `npm run build:prod` — `images:opt` → `verify-images` → `build` (recomendado para CI / deploy).
 
-Notas importantes
-
-- Ferramentas de build (`gulp`, `sass`, `sharp`, etc.) estão em `devDependencies` — padrão da escola.
-- Não abra nem salve arquivos binários (imagens) no editor; use Preview/Finder/Imagem Viewer.
-- Para deploy na Vercel: configure o Build Command para `npm run vercel-build` (o `vercel-build` executa `build:prod`).
-
 Diagnóstico e contexto
 
 Havia um problema com compressão automática que corrompia alguns JPEGs no ambiente local (provavelmente comportamento de um plugin). Para evitar isso:
@@ -26,4 +20,3 @@ Havia um problema com compressão automática que corrompia alguns JPEGs no ambi
 - o pipeline do Gulp processa imagens com `sharp` de forma segura;
 - há um script separado para otimização em lote (`images:opt`) e uma verificação (`verify-images`).
 
-Se precisar, adiciono instruções de CI específicas (Vercel/GitHub Actions) ou ajuste de qualidade das imagens.
