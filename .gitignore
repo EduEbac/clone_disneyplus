@@ -1,6 +1,7 @@
 node_modules/
-dist
+dist/
+notes/
 
-.txt
-.pdf
+*.txt
+*.pdf
 
