@@ -1,30 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll("[data-tab-button]");
   const lists = document.querySelectorAll("[data-tab-id]");
+  const STORAGE_KEY = "showsActiveTab";
 
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("click", function (event) {
-      const btn = event.currentTarget;
-      const tabValue = btn.dataset.tabButton; // "em_breve", "populares", "star_plus"
+  function activateTab(tabValue) {
+    // buttons
+    buttons.forEach((button) =>
+      button.classList.toggle("shows__tabs__button--is-active", button.dataset.tabButton === tabValue),
+    );
 
-      // 1. Remove active class from all buttons
-      buttons.forEach((button) =>
-        button.classList.remove("shows__tabs__button--is-active"),
-      );
-
-      // 2. Add active class to clicked button
-      btn.classList.add("shows__tabs__button--is-active");
-
-      // 3. Remove active class from all lists
-      lists.forEach((list) => list.classList.remove("shows__list--is-active"));
-
-      // 4. Add active class to matching list
-      const activeList = document.querySelector(`[data-tab-id="${tabValue}"]`);
-      if (activeList) {
-        activeList.classList.add("shows__list--is-active");
-      }
-    });
+    // lists
+    lists.forEach((list) =>
+      list.classList.toggle("shows__list--is-active", list.dataset.tabId === tabValue),
+    );
   }
+
+  // restore saved tab or default
+  const saved = localStorage.getItem(STORAGE_KEY) || "em_breve";
+  activateTab(saved);
+
+  // attach handlers
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", function (event) {
+      const tabValue = btn.dataset.tabButton;
+      if (!tabValue) return;
+      // save
+      localStorage.setItem(STORAGE_KEY, tabValue);
+      // activate
+      activateTab(tabValue);
+    });
+  });
 });
 
 // Passos a passo:

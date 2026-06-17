@@ -3,6 +3,7 @@
 .hero {
     padding: 5.6vw;
     min-height: 80vh;
+    max-height: 100vh;  // impede crescimento excessivo
     background: url(../images/hero_desktop.jpeg) center/cover no-repeat;
     text-align: center;
 
@@ -47,20 +48,5 @@
                 }
             }
         }
-
-        button {
-            display: block;
-            width: 100%;
-            height: 60px;
-            font-size: 18px;
-            color: variaveis.$corTextoSecundario;
-            background-color: #6421ff;
-            text-transform: uppercase;
-            margin-top: 2vw;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            margin-top: 2vw;
-            margin-bottom: 8px;
-        };
     }
 }

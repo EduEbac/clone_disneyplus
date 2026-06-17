@@ -2,6 +2,7 @@
 
 .shows {
     padding: 2vw 5.6vw;
+    min-height: 50vw;
     &__list {
         margin-top: 44px;
         display: none;
@@ -13,10 +14,12 @@
         }
         
         &__item{
+            display: flex;
+            justify-content: center;
+
             img {
                 max-width: 100%;
                 border-radius: 4px;
-
             }
         }
     }
