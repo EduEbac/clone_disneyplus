@@ -34,7 +34,8 @@ async function processFile(file) {
 
 (async () => {
   ensureDir(outTmp);
-  const patterns = ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.webp"];
+  // include SVGs so icon/vector assets are copied to dist as-is
+  const patterns = ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.webp", "**/*.svg"];
   let files = [];
   patterns.forEach((p) => {
     files = files.concat(glob.sync(p, { cwd: srcDir, absolute: true }));

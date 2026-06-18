@@ -35,7 +35,8 @@ function images() {
   // patterns: list of glob patterns we want to process. The patterns are
   // relative to srcDir. Using glob.sync with cwd returns matching paths
   // inside the srcDir.
-  const patterns = ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.webp"];
+  // include SVGs so icon/vector assets are copied to dist as-is
+  const patterns = ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.webp", "**/*.svg"];
 
   // flatMap takes each pattern, runs glob.sync and flattens the arrays
   // into a single files[] array. Students unfamiliar with flatMap can
