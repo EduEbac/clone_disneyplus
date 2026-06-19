@@ -23,7 +23,7 @@ async function processFile(file) {
     } else if (ext === ".png") {
       await sharp(file).png({ compressionLevel: 9 }).toFile(destTmp);
     } else {
-      // copy other files
+      // copiar outros arquivos
       fs.copyFileSync(file, destTmp);
     }
     return { file: rel, ok: true };
@@ -34,7 +34,7 @@ async function processFile(file) {
 
 (async () => {
   ensureDir(outTmp);
-  // include SVGs so icon/vector assets are copied to dist as-is
+  // inclui SVGs para que ícones/recursos vetoriais sejam copiados para dist sem alteração
   const patterns = ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.webp", "**/*.svg"];
   let files = [];
   patterns.forEach((p) => {
@@ -48,10 +48,10 @@ async function processFile(file) {
 
   const results = [];
   for (const f of files) {
-    // skip directories
+    // ignora diretórios
     const stat = fs.statSync(f);
     if (!stat.isFile()) continue;
-    // process
+    // processar
     // eslint-disable-next-line no-await-in-loop
     const res = await processFile(f);
     results.push(res);
@@ -64,7 +64,7 @@ async function processFile(file) {
     process.exit(2);
   }
 
-  // replace outDir atomically
+  // substituir outDir de forma atômica
   if (fs.existsSync(outDir)) {
     fs.rmSync(outDir, { recursive: true, force: true });
   }

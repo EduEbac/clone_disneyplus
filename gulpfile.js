@@ -1,16 +1,16 @@
 const gulp = require("gulp");
 const sass = require("gulp-sass")(require("sass"));
 const cleanCSS = require("gulp-clean-css");
-// Image processing with `sharp` inside Gulp
-// Rationale: previous imagemin-based pipelines produced corrupted
-// binaries on some setups. Using `sharp` gives deterministic
-// re-encoding and avoids accidental text/encoding transformations.
+// Processamento de imagens com `sharp` dentro do Gulp
+// Motivo: pipelines anteriores baseados em imagemin produziram binários
+// corrompidos em alguns ambientes. Usar `sharp` fornece re-encoding
+// determinístico e evita transformações indesejadas no binário.
 const fs = require("fs");
 const path = require("path");
 const glob = require("glob");
 const sharp = require("sharp");
 
-// Helper: ensure a directory exists. Equivalent to `mkdir -p`.
+// Função auxiliar: garante que um diretório exista. Equivalente a `mkdir -p`.
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
@@ -24,60 +24,60 @@ function styles() {
 }
 
 function images() {
-  // --- Explanation (didactic comments) ---
-  // srcDir: directory where source images are stored (relative to this file)
-  // outDir: where processed images will be written (dist/images)
-  // path.join: joins path segments in an OS-independent way
+  // --- Explicação (comentários didáticos) ---
+  // srcDir: diretório onde estão as imagens de origem (relativo a este arquivo)
+  // outDir: onde as imagens processadas serão gravadas (dist/images)
+  // path.join: une segmentos de caminho de forma independente do sistema operacional
   const srcDir = path.join(__dirname, "src", "images");
   const outDir = path.join(__dirname, "dist", "images");
   ensureDir(outDir);
 
-  // patterns: list of glob patterns we want to process. The patterns are
-  // relative to srcDir. Using glob.sync with cwd returns matching paths
-  // inside the srcDir.
-  // include SVGs so icon/vector assets are copied to dist as-is
+  // patterns: lista de padrões glob para processarmos. Os padrões são
+  // relativos a srcDir. Usar glob.sync com cwd retorna caminhos
+  // correspondentes dentro de srcDir.
+  // inclui SVGs para que ícones/recursos vetoriais sejam copiados para dist sem alteração
   const patterns = ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.webp", "**/*.svg"];
 
-  // flatMap takes each pattern, runs glob.sync and flattens the arrays
-  // into a single files[] array. Students unfamiliar with flatMap can
-  // replace this with a simple loop + concat.
+  // flatMap executa glob.sync para cada padrão e achata os arrays
+  // em um único array files[]. Estudantes não familiarizados com flatMap
+  // podem substituir por um loop simples + concat.
   const files = patterns.flatMap((p) =>
     glob.sync(p, { cwd: srcDir, absolute: true }),
   );
 
-  // We return a Promise because the image processing uses async/await.
-  // Gulp will wait for this Promise to resolve before finishing the task.
+  // Retornamos uma Promise porque o processamento de imagens usa async/await.
+  // O Gulp aguardará essa Promise resolver antes de finalizar a tarefa.
   return new Promise(async (resolve, reject) => {
     try {
-      // Process files sequentially. This keeps memory stable and makes
-      // the behavior easier to follow for educational purposes.
+      // Processa os arquivos sequencialmente. Isso mantém o uso de memória estável e
+      // torna o comportamento mais fácil de acompanhar para fins didáticos.
       for (const f of files) {
-        // rel: path relative to srcDir, used to preserve folder structure
+        // rel: caminho relativo a srcDir, usado para preservar a estrutura de pastas
         const rel = path.relative(srcDir, f);
         const dest = path.join(outDir, rel);
         ensureDir(path.dirname(dest));
 
-        // ext: normalized extension used to decide processing steps
+        // ext: extensão normalizada usada para decidir os passos de processamento
         const ext = path.extname(f).toLowerCase();
 
         if (ext === ".jpg" || ext === ".jpeg") {
-          // Re-encode JPEGs with quality 75 using mozjpeg encoder inside sharp
-          // This produces a proper binary JPEG file.
+          // Re-encoda JPEGs com qualidade 75 usando mozjpeg via sharp
+          // Isso produz um arquivo JPEG binário adequado.
           await sharp(f).jpeg({ quality: 75, mozjpeg: true }).toFile(dest);
         } else if (ext === ".png") {
-          // For PNG we write with a high compression level.
+          // Para PNG escrevemos com alto nível de compressão.
           await sharp(f).png({ compressionLevel: 9 }).toFile(dest);
         } else {
-          // Fallback: copy unknown formats unchanged.
+          // Fallback: copia formatos desconhecidos sem alterações.
           fs.copyFileSync(f, dest);
         }
       }
       // All files processed successfully
       resolve();
     } catch (err) {
-      // If something fails, reject so Gulp shows the error to the student
-      // and the build stops — this is better than silently producing
-      // corrupted files.
+      // Se algo falhar, rejeitamos para que o Gulp mostre o erro ao aluno
+      // e o build seja interrompido — isso é preferível a produzir arquivos
+      // corrompidos silenciosamente.
       reject(err);
     }
   });

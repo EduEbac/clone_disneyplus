@@ -1,0 +1,52 @@
+@use 'variaveis';
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100; // garante que o header fique acima dos elementos.
+    background-color: variaveis.$corDeFundo;
+        transition: transform 0.5s ease, background-color 0.5s ease, opacity 0.5s ease;
+
+    &--is-hidden {
+        background-color: transparent;
+            transform: translateY(-110%);
+            opacity: 0.95;
+
+        .header {
+            &__logo, &__links__item:first-child {
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity .5s ease;
+            }
+        }
+    }
+
+    &__container {
+        padding: 8px 36px;
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    &__logo {
+        max-width: 80px;
+        width: 100%;
+        margin: 5px;
+        transition: opacity .5s ease;
+
+    }
+
+    &__links {
+        display: flex;
+
+        &__item {
+            margin: 5px;
+            transition: opacity .5s ease;
+        }
+    }
+    
+    .button {
+        height: 50px;
+    }
+}

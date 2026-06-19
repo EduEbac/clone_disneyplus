@@ -4,6 +4,31 @@ document.addEventListener("DOMContentLoaded", function () { // Aguarda DOM carre
   const STORAGE_KEY = "showsActiveTab"; // chave utilizada em localStorage
   const questions = document.querySelectorAll('[data-faq-question]'); // Seleciona todas as perguntas FAQ
 
+  const heroSection = document.querySelector('.hero'); // seleciona section com class hero
+  const heightHero = heroSection.clientHeight; // obtém altura hero (img)
+
+  // Tratamento de scroll melhorado: uso de requestAnimationFrame para
+  // limitar (throttle) atualizações e
+  // evitar trocas repetidas de classe quando o estado não muda.
+  let ticking = false;
+  let headerHidden = null; // estado inicial desconhecido
+
+  window.addEventListener('scroll', function() {
+    const positionNow = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const shouldHide = positionNow < heightHero;
+        if (headerHidden !== shouldHide) {
+          const header = document.querySelector('header');
+          header.classList.toggle('header--is-hidden', shouldHide);
+          headerHidden = shouldHide;
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
   questions.forEach((quest) => quest.addEventListener('click', open_close_question)); // adiciona evento click para abrir e fechar pergunta
   
   function open_close_question (element) { // função que alterna o estado da pergunta
@@ -25,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () { // Aguarda DOM carre
   const saved = localStorage.getItem(STORAGE_KEY) || "em_breve"; // Se houver aba salva usa ela, senão usa "em_breve"
   activateTab(saved);
 
-  // attach handlers
+  // anexar manipuladores
   buttons.forEach((btn) => { // para cada botão
     btn.addEventListener("click", function (event) { // ao clicar executa
       const tabValue = btn.dataset.tabButton; // obtém o valor da aba
