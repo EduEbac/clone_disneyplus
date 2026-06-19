@@ -1,11 +1,7 @@
-# Ignore development and source files when deploying from local
+# Ignore development and local-only files, but keep build inputs
 node_modules
 .vscode
 .git
 assets/
 notes/
-src/
-scripts/
-gulpfile.js
-package.json
 README.md
