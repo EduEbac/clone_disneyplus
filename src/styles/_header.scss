@@ -27,6 +27,10 @@
         display: flex;
         justify-content: space-between;
 
+        // Responsivo: Mobile (< 768px)
+        @media (max-width: variaveis.$breakpoint-tablet) {
+            padding: 8px 16px;
+        }
     }
 
     &__logo {

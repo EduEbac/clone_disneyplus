@@ -3,8 +3,13 @@
 .hero {
     padding: 5.6vw;
     min-height: 80vh;
-    max-height: 100vh;
-    background: url(../images/hero_desktop.jpeg) center bottom/cover no-repeat;
+     /* Evita que a imagem seja cortada excessivamente no topo em telas grandes;
+         usar 'center top' mantém a parte superior visível. Mantemos 'cover'
+         para preencher a área, e ajustamos em breakpoints menores. */
+     background-image: url(../images/hero_desktop.jpeg);
+     background-position: center top;
+     background-size: cover;
+     background-repeat: no-repeat;
     text-align: center;
 
     .button {
@@ -40,6 +45,7 @@
         &__combos {
             display: flex;
             justify-content: space-between;
+            gap: 24px;
 
             &__combo {
                 width: calc(50% - 12px);
@@ -55,3 +61,69 @@
         }
     }
 }
+
+// Responsivo: Mobile (< 768px)
+@media (max-width: variaveis.$breakpoint-tablet) {
+    .hero {
+        padding: 0;
+        min-height: auto;
+        background-image: url(../images/hero_celular.jpeg);
+        background-position: top center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        padding-bottom: 3vw;
+
+        .button {
+            margin-top: 4vw;
+        }
+
+        &__content {
+            padding-top: 420px;
+            padding-left: 3vw;
+            padding-right: 3vw;
+
+            .title--small {
+                margin-bottom: 32px;
+            }
+
+            p {
+                margin-bottom: 16px;
+
+                &:last-child {
+                    margin-top: 32px;
+                }
+            }
+
+            &__combos {
+                flex-direction: column;
+                gap: 12px;
+
+                &__combo {
+                    width: 100%;
+
+                    img {
+                        max-height: 70px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsivo: Mobile pequeno (< 480px)
+@media (max-width: variaveis.$breakpoint-mobile) {
+    .hero {
+        padding: 2vw;
+
+        &__content {
+            &__branding {
+                margin: 0 auto 24px;
+            }
+
+            .title--small {
+                margin-bottom: 24px;
+            }
+        }
+    }
+}
+

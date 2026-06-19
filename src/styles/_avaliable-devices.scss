@@ -11,20 +11,52 @@
         gap: 24px;
         grid-template-columns: repeat(4, 1fr);
 
+        // Responsivo: Tablet (< 1024px)
+        @media (max-width: 1024px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        // Responsivo: Mobile (< 768px) — volta para 4 colunas com redução de tamanho
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 5.6vw 0;
+        }
+
         &__item {
             text-align: center;
 
             h4 {
-                margin-top: 20px;
-                margin-bottom: 24px;
+                margin-top: 12px;
+                margin-bottom: 12px;
+                font-size: 14px;
+
+                // Responsivo: Mobile (< 768px)
+                @media (max-width: 768px) {
+                    font-size: 12px;
+                    margin-top: 8px;
+                    margin-bottom: 8px;
+                }
             }
 
             li {
                 list-style-type: none;
+                font-size: 12px;
+
+                // Responsivo: Mobile (< 768px)
+                @media (max-width: 768px) {
+                    font-size: 10px;
+                }
             }
             
             img {
                 max-width: 100%;
+                max-height: 100px;
+
+                // Responsivo: Mobile (< 768px)
+                @media (max-width: 768px) {
+                    max-height: 50px;
+                }
             }
         }
     }
