@@ -88,5 +88,15 @@ function watchFiles() {
   gulp.watch("./src/images/**/*", images);
 }
 
-exports.default = gulp.series(styles, images);
-exports.watch = gulp.series(styles, images, watchFiles);
+function copyJs() {
+  // copia o JS de src para dist/js para que o site buildado seja autônomo
+  return gulp.src('./src/main.js').pipe(gulp.dest('./dist/js'));
+}
+
+function copyHtml() {
+  // copia o index.html para dist para que o diretório de saída esteja completo
+  return gulp.src('./index.html').pipe(gulp.dest('./dist'));
+}
+
+exports.default = gulp.series(styles, images, copyJs, copyHtml);
+exports.watch = gulp.series(styles, images, copyJs, copyHtml, watchFiles);
