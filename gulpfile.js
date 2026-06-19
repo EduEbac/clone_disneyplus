@@ -98,5 +98,23 @@ function copyHtml() {
   return gulp.src('./index.html').pipe(gulp.dest('./dist'));
 }
 
-exports.default = gulp.series(styles, images, copyJs, copyHtml);
-exports.watch = gulp.series(styles, images, copyJs, copyHtml, watchFiles);
+function fixHtmlPaths(done) {
+  // Ajusta paths dentro de dist/index.html para que sejam relativos ao próprio dist/
+  const file = path.join(__dirname, 'dist', 'index.html');
+  if (!fs.existsSync(file)) return done();
+  let content = fs.readFileSync(file, 'utf8');
+
+  // Regras de substituição:
+  // - ./dist/css/main.css -> ./css/main.css
+  // - ./dist/images/...    -> ./images/...
+  // - ./src/main.js        -> ./js/main.js (copiado por copyJs)
+  content = content.replace(/href="\.\/dist\/css\//g, 'href="./css/');
+  content = content.replace(/src="\.\/dist\/images\//g, 'src="./images/');
+  content = content.replace(/src="\.\/src\/main\.js"/g, 'src="./js/main.js"');
+
+  fs.writeFileSync(file, content, 'utf8');
+  return done();
+}
+
+exports.default = gulp.series(styles, images, copyJs, copyHtml, fixHtmlPaths);
+exports.watch = gulp.series(styles, images, copyJs, copyHtml, fixHtmlPaths, watchFiles);
