@@ -14,16 +14,10 @@
             grid-template-columns: 1fr 1fr;
         }
         
-        // Responsivo: Mobile Médio (481px - 768px)
-        @media (max-width: variaveis.$breakpoint-tablet) and (min-width: 481px) {
+        // Responsivo: Mobile (< 768px) — 2 colunas
+        @media (max-width: variaveis.$breakpoint-tablet) {
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-        }
-        
-        // Responsivo: Mobile Pequeno (< 480px)
-        @media (max-width: 480px) {
-            grid-template-columns: 1fr;
-            gap: 16px;
         }
 
         &--is-active {
